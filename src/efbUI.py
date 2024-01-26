@@ -13,6 +13,7 @@ def filterOTP(otp):
   atisTemplate = {
     "network": "",
     "issued": "",
+    "letter": "",
     "phonetic": "",
     "type": "",
     "message": ""
@@ -104,6 +105,7 @@ def filterOTP(otp):
         temp = { 
           "network": atis.get("network", ""),
           "issued": atis.get("issued", ""),
+          "letter": atis.get("letter", ""),
           "phonetic": atis.get("phonetic", ""),
           "type": atis.get("type", ""),
           "message": atis.get("message", "")
@@ -182,6 +184,7 @@ def filterOTP(otp):
         temp = { 
           "network": atis.get("network", ""),
           "issued": atis.get("issued", ""),
+          "letter": atis.get("letter", ""),
           "phonetic": atis.get("phonetic", ""),
           "type": atis.get("type", ""),
           "message": atis.get("message", "")
@@ -261,6 +264,7 @@ def filterOTP(otp):
           temp = { 
             "network": atis.get("network", ""),
             "issued": atis.get("issued", ""),
+            "letter": atis.get("letter", ""),
             "phonetic": atis.get("phonetic", ""),
             "type": atis.get("type", ""),
             "message": atis.get("message", "")
