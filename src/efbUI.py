@@ -12,31 +12,6 @@ def filterOTP(otp):
 
   filteredOFP = {}
 
-  atisTemplate = {
-    "network": "",
-    "issued": "",
-    "letter": "",
-    "phonetic": "",
-    "type": "",
-    "message": ""
-  }
-
-  notamTemplate = { 
-    "accountID": "",
-    "notamID": "",
-    "locationID": "",
-    "locationICAO": "",
-    "locationName": "",
-    "locationType": "",
-    "dateEffective": "",
-    "dateExpire": "",
-    "notamText": "",
-    "notamQcodeCategory": "",
-    "notamQcodeSubject": "",
-    "notamQcodeStatus": "",
-    "notamIsObstacle": False
-  }
-
   # defaults
   params = {}
   general = {}
@@ -49,6 +24,14 @@ def filterOTP(otp):
   weights = {}
   weather = {}
   files = {}
+
+  if data.get("fetch"):
+    fetch = { 
+      "userID": data.get("fetch").get("userid", ""),
+      "status": data.get("fetch").get("status", ""),
+      "time": data.get("fetch").get("time", "")
+    }
+    filteredOFP["fetch"] = fetch
 
   if data.get("params"):
     params = { 
