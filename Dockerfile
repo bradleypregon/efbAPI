@@ -8,6 +8,4 @@ COPY ./src /src
 
 WORKDIR src
 
-EXPOSE 8001
-
 CMD ["python", "api.py"]
