@@ -197,6 +197,7 @@ def filterOTP(otp):
         "trackMag": item.get("track_mag", ""),
         "avgWindComp": item.get("avg_wind_comp", ""),
         "avgWindDir": item.get("avg_wind_dir", ""),
+        "avgWindSpd": item.get("avg_wind_spd", ""),
         "ete": item.get("ete", ""),
         "route": item.get("route", ""),
         "routeIFPS": item.get("route", ""),
