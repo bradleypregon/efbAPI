@@ -106,7 +106,7 @@ def filterOTP(otp):
           "locationName": notam.get("location_name", ""),
           "locationType": notam.get("location_type", ""),
           "dateEffective": notam.get("date_effective", ""),
-          "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "",
+          "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "2099-12-31T11:59:00Z",
           "notamText": notam.get("account_id", ""),
           "notamQcodeCategory": notam.get("account_id", ""),
           "notamQcodeSubject": notam.get("account_id", ""),
@@ -163,7 +163,7 @@ def filterOTP(otp):
           "locationName": notam.get("location_name", ""),
           "locationType": notam.get("location_type", ""),
           "dateEffective": notam.get("date_effective", ""),
-          "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "",
+          "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "2099-12-31T11:59:00Z",
           "notamText": notam.get("account_id", ""),
           "notamQcodeCategory": notam.get("account_id", ""),
           "notamQcodeSubject": notam.get("account_id", ""),
@@ -236,7 +236,7 @@ def filterOTP(otp):
             "locationName": notam.get("location_name", ""),
             "locationType": notam.get("location_type", ""),
             "dateEffective": notam.get("date_effective", ""),
-            "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "",
+            "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "2099-12-31T11:59:00Z",
             "notamText": notam.get("account_id", ""),
             "notamQcodeCategory": notam.get("account_id", ""),
             "notamQcodeSubject": notam.get("account_id", ""),
@@ -258,6 +258,7 @@ def filterOTP(otp):
       "reg": data.get("aircraft").get("reg", ""),
       "selcal": data.get("aircraft").get("selcal", "")
     }
+    filteredOFP["aircraft"] = aircraft
   
   if data.get("fuel"):
     fuel = { 
