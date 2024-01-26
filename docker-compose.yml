@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  sbcleaner:
+    build: .
+    restart: unless-stopped
+    container_name: sbcleaner
+    volumes:
+      - ./app:/app
+
+networks:
+  default:
+    external: true
+    name: nw
