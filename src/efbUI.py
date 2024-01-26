@@ -10,6 +10,8 @@ def fetchOTP(id):
 def filterOTP(otp):
   data = otp
 
+  filteredOFP = {}
+
   atisTemplate = {
     "network": "",
     "issued": "",
@@ -56,14 +58,7 @@ def filterOTP(otp):
       "airac": data.get("params").get("airac", ""),
       "units": data.get("params").get("units", "")
     }
-  else:
-    params = { 
-      "requestID": "",
-      "userID": "",
-      "ofpLayout": "",
-      "airac": "",
-      "units": ""
-    }
+    filteredOFP["params"] = params
   
   if data.get("general"):
     general = { 
@@ -79,61 +74,13 @@ def filterOTP(otp):
       "routeIFPS": data.get("general").get("route_ifps", ""),
       "routeNavigraph": data.get("general").get("route_navigraph", "")
     }
-  else:
-    general = { 
-      "airline": "",
-      "flightNumber": "",
-      "cruiseProfile": "",
-      "alternateProfile": "",
-      "costIndex": "",
-      "initialAltitude": "",
-      "airDistance": "",
-      "passengers": "",
-      "route": "",
-      "routeIFPS": "",
-      "routeNavigraph": ""
-    }
+    filteredOFP["general"] = general
     
   # Origin, Destination, Alternate need iterated for ATIS and NOTAM
 
   if data.get("origin"):
     atisList = []
     notamList = []
-    
-    if data.get("origin").get("atis"):
-      for atis in data.get("origin").get("atis"):
-        temp = { 
-          "network": atis.get("network", ""),
-          "issued": atis.get("issued", ""),
-          "letter": atis.get("letter", ""),
-          "phonetic": atis.get("phonetic", ""),
-          "type": atis.get("type", ""),
-          "message": atis.get("message", "")
-        }
-        atisList.append(temp)
-    else:
-      atisList = [atisTemplate]
-    
-    if data.get("origin").get("notam"):
-      for notam in data.get("origin").get("notam"):
-        temp = { 
-          "accountID": notam.get("account_id", ""),
-          "notamID": notam.get("notam_id", ""),
-          "locationID": notam.get("location_id", ""),
-          "locationICAO": notam.get("location_icao", ""),
-          "locationName": notam.get("location_name", ""),
-          "locationType": notam.get("location_type", ""),
-          "dateEffective": notam.get("date_effective", ""),
-          "dateExpire": notam.get("date_expire", ""),
-          "notamText": notam.get("account_id", ""),
-          "notamQcodeCategory": notam.get("account_id", ""),
-          "notamQcodeSubject": notam.get("account_id", ""),
-          "notamQcodeStatus": notam.get("account_id", ""),
-          "notamIsObstacle": notam.get("notam_is_obstacle", False)
-        }
-        notamList.append(temp)
-    else: 
-      notamList = [notamTemplate]
 
     origin = { 
       "icaoCode": data.get("origin").get("icao_code", ""),
@@ -150,37 +97,11 @@ def filterOTP(otp):
       "metarTime": data.get("origin").get("metar_time", ""), 
       "metarCategory": data.get("origin").get("metar_category", ""),
       "metarVisibility": data.get("origin").get("metar_visibility", ""),
-      "metarCeiling": data.get("origin").get("metar_ceiling", ""),
-      "atis": atisList,
-      "notam": notamList
+      "metarCeiling": data.get("origin").get("metar_ceiling", "")
     }
-  else:
-    origin = { 
-      "icaoCode": "",
-      "iataCode": "",
-      "faaCode": "",
-      "elevation": "",
-      "posLat": "",
-      "posLong": "",
-      "name": "",
-      "planRwy": "",
-      "transAlt": "",
-      "transLevel": "",
-      "metar": "",
-      "metarTime": "",
-      "metarCategory": "",
-      "metarVisibility": "",
-      "metarCeiling": "",
-      "atis": [atisTemplate],
-      "notam": [notamTemplate]
-    }
-
-  if data.get("destination"):
-    atisList = []
-    notamList = []
     
-    if data.get("destination").get("atis"):
-      for atis in data.get("destination").get("atis"):
+    if data.get("origin").get("atis"):
+      for atis in data.get("origin").get("atis"):
         temp = { 
           "network": atis.get("network", ""),
           "issued": atis.get("issued", ""),
@@ -190,11 +111,10 @@ def filterOTP(otp):
           "message": atis.get("message", "")
         }
         atisList.append(temp)
-    else:
-      atisList = [atisTemplate]
+      origin["atis"] = atisList
     
-    if data.get("destination").get("notam"):
-      for notam in data.get("destination").get("notam"):
+    if data.get("origin").get("notam"):
+      for notam in data.get("origin").get("notam"):
         temp = { 
           "accountID": notam.get("account_id", ""),
           "notamID": notam.get("notam_id", ""),
@@ -203,7 +123,7 @@ def filterOTP(otp):
           "locationName": notam.get("location_name", ""),
           "locationType": notam.get("location_type", ""),
           "dateEffective": notam.get("date_effective", ""),
-          "dateExpire": notam.get("date_expire", ""),
+          "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "",
           "notamText": notam.get("account_id", ""),
           "notamQcodeCategory": notam.get("account_id", ""),
           "notamQcodeSubject": notam.get("account_id", ""),
@@ -211,9 +131,14 @@ def filterOTP(otp):
           "notamIsObstacle": notam.get("notam_is_obstacle", False)
         }
         notamList.append(temp)
-    else: 
-      notamList = [notamTemplate]
+      origin["notam"] = notamList
     
+    filteredOFP["origin"] = origin
+
+  if data.get("destination"):
+    atisList = []
+    notamList = []
+
     destination = { 
       "icaoCode": data.get("destination").get("icao_code", ""),
       "iataCode": data.get("destination").get("iata_code", ""), 
@@ -229,70 +154,48 @@ def filterOTP(otp):
       "metarTime": data.get("destination").get("metar_time", ""), 
       "metarCategory": data.get("destination").get("metar_category", ""),
       "metarVisibility": data.get("destination").get("metar_visibility", ""),
-      "metarCeiling": data.get("destination").get("metar_ceiling", ""),
-      "atis": atisList,
-      "notam": notamList
+      "metarCeiling": data.get("destination").get("metar_ceiling", "")
     }
-  else:
-    destination = { 
-      "icaoCode": "",
-      "iataCode": "",
-      "faaCode": "",
-      "elevation": "",
-      "posLat": "",
-      "posLong": "",
-      "name": "",
-      "planRwy": "",
-      "transAlt": "",
-      "transLevel": "",
-      "metar": "",
-      "metarTime": "",
-      "metarCategory": "",
-      "metarVisibility": "",
-      "metarCeiling": "",
-      "atis": [atisTemplate],
-      "notam": [notamTemplate]
-    }
+    
+    if data.get("destination").get("atis"):
+      for atis in data.get("destination").get("atis"):
+        temp = { 
+          "network": atis.get("network", ""),
+          "issued": atis.get("issued", ""),
+          "letter": atis.get("letter", ""),
+          "phonetic": atis.get("phonetic", ""),
+          "type": atis.get("type", ""),
+          "message": atis.get("message", "")
+        }
+        atisList.append(temp)
+      destination["atis"] = atisList
+    
+    if data.get("destination").get("notam"):
+      for notam in data.get("destination").get("notam"):
+        temp = { 
+          "accountID": notam.get("account_id", ""),
+          "notamID": notam.get("notam_id", ""),
+          "locationID": notam.get("location_id", ""),
+          "locationICAO": notam.get("location_icao", ""),
+          "locationName": notam.get("location_name", ""),
+          "locationType": notam.get("location_type", ""),
+          "dateEffective": notam.get("date_effective", ""),
+          "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "",
+          "notamText": notam.get("account_id", ""),
+          "notamQcodeCategory": notam.get("account_id", ""),
+          "notamQcodeSubject": notam.get("account_id", ""),
+          "notamQcodeStatus": notam.get("account_id", ""),
+          "notamIsObstacle": notam.get("notam_is_obstacle", False)
+        }
+        notamList.append(temp)
+      destination["notam"] = notamList
+    
+    filteredOFP["destination"] = destination
   
   if data.get("alternate"):
     for item in data["alternate"]:
       atisList = []
       notamList = []
-
-      if item.get("atis"):
-        for atis in item.get("atis"):
-          temp = { 
-            "network": atis.get("network", ""),
-            "issued": atis.get("issued", ""),
-            "letter": atis.get("letter", ""),
-            "phonetic": atis.get("phonetic", ""),
-            "type": atis.get("type", ""),
-            "message": atis.get("message", "")
-          }
-          atisList.append(temp)
-      else:
-        atisList = [atisTemplate]
-
-      if item.get("notam"):
-        for notam in item.get("notam"):
-          temp = { 
-            "accountID": notam.get("account_id", ""),
-            "notamID": notam.get("notam_id", ""),
-            "locationID": notam.get("location_id", ""),
-            "locationICAO": notam.get("location_icao", ""),
-            "locationName": notam.get("location_name", ""),
-            "locationType": notam.get("location_type", ""),
-            "dateEffective": notam.get("date_effective", ""),
-            "dateExpire": notam.get("date_expire", ""),
-            "notamText": notam.get("account_id", ""),
-            "notamQcodeCategory": notam.get("account_id", ""),
-            "notamQcodeSubject": notam.get("account_id", ""),
-            "notamQcodeStatus": notam.get("account_id", ""),
-            "notamIsObstacle": notam.get("notam_is_obstacle", False)
-          }
-          notamList.append(temp)
-      else: 
-        notamList = [notamTemplate]
 
       obj = { 
         "icaoCode": item.get("icao_code", ""),
@@ -319,41 +222,48 @@ def filterOTP(otp):
         "metarTime": item.get("metar_time", ""),
         "metarCategory": item.get("metar_category", ""),
         "metarVisibility": item.get("metar_visibility", ""),
-        "metarCeiling": item.get("metar_ceiling", ""),
-        "atis": atisList,
-        "notam": notamList
+        "metarCeiling": item.get("metar_ceiling", "")
+        # "atis": atisList,
+        # "notam": notamList
       }
+
+      if item.get("atis"):
+        for atis in item.get("atis"):
+          temp = { 
+            "network": atis.get("network", ""),
+            "issued": atis.get("issued", ""),
+            "letter": atis.get("letter", ""),
+            "phonetic": atis.get("phonetic", ""),
+            "type": atis.get("type", ""),
+            "message": atis.get("message", "")
+          }
+          atisList.append(temp)
+        obj["atis"] = atisList
+      # else:
+      #   atisList = [atisTemplate]
+
+      if item.get("notam"):
+        for notam in item.get("notam"):
+          temp = { 
+            "accountID": notam.get("account_id", ""),
+            "notamID": notam.get("notam_id", ""),
+            "locationID": notam.get("location_id", ""),
+            "locationICAO": notam.get("location_icao", ""),
+            "locationName": notam.get("location_name", ""),
+            "locationType": notam.get("location_type", ""),
+            "dateEffective": notam.get("date_effective", ""),
+            "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "",
+            "notamText": notam.get("account_id", ""),
+            "notamQcodeCategory": notam.get("account_id", ""),
+            "notamQcodeSubject": notam.get("account_id", ""),
+            "notamQcodeStatus": notam.get("account_id", ""),
+            "notamIsObstacle": notam.get("notam_is_obstacle", False)
+          }
+          notamList.append(temp)
+        obj["notam"] = notamList
+
       alternates.append(obj)
-  else: 
-    alternates = [{
-      "icaoCode": "",
-      "iataCode": "",
-      "faaCode": "",
-      "elevation": "",
-      "posLat": "",
-      "posLong": "",
-      "name": "",
-      "planRwy": "",
-      "transAlt": "",
-      "transLevel": "",
-      "cruiseAltitude": "",
-      "airDistance": "",
-      "trackTrue": "",
-      "trackMag": "",
-      "avgWindComp": "",
-      "avgWindDir": "",
-      "ete": "",
-      "route": "",
-      "routeIFPS": "",
-      "routeNavigraph": "",
-      "metar": "",
-      "metarTime": "",
-      "metarCategory": "",
-      "metarVisibility": "",
-      "metarCeiling": "",
-      "atis": [atisTemplate],
-      "notam": [notamTemplate]
-    }]
+    filteredOFP["alternate"] = alternates
 
   if data.get("aircraft"):
     aircraft = { 
@@ -364,15 +274,6 @@ def filterOTP(otp):
       "reg": data.get("aircraft").get("reg", ""),
       "selcal": data.get("aircraft").get("selcal", "")
     }
-  else:
-    aircraft = { 
-      "icaoCode": "",
-      "iataCode": "",
-      "baseType": "",
-      "name": "",
-      "reg": "",
-      "selcal": ""
-    }
   
   if data.get("fuel"):
     fuel = { 
@@ -380,12 +281,7 @@ def filterOTP(otp):
       "takeoff": data.get("fuel").get("plan_takeoff", ""),
       "landing": data.get("fuel").get("plan_landing", "")
     }
-  else:
-    fuel = { 
-      "block": "",
-      "takeoff": "",
-      "landing": ""
-    }
+    filteredOFP["fuel"] = fuel
   
   if data.get("times"):
     times = { 
@@ -393,12 +289,7 @@ def filterOTP(otp):
       "schedDep": data.get("times").get("sched_off", ""),
       "schedArr": data.get("times").get("sched_in", "")
     }
-  else:
-    times = { 
-      "ete": "",
-      "schedDep": "",
-      "schedArr": "",
-    }
+    filteredOFP["times"] = times
   
   if data.get("weights"):
     weights = { 
@@ -410,16 +301,7 @@ def filterOTP(otp):
       "estTOW": data.get("weights").get("est_tow", ""),
       "estLDW": data.get("weights").get("est_ldw", "")
     }
-  else:
-    weights = { 
-      "paxCountActual": "",
-      "paxWeight": "",
-      "bagWeight": "",
-      "cargo":  "",
-      "estZFW": "",
-      "estTOW": "",
-      "estLDW": ""
-    }
+    filteredOFP["weights"] = weights
   
   if data.get("weather"):
     weather = { 
@@ -427,43 +309,15 @@ def filterOTP(otp):
       "destMETAR": data.get("weather").get("dest_metar", ""),
       "altnMETAR": data.get("weather").get("altn_metar", "")
     }
-  else:
-    weather = { 
-      "origMETAR": "",
-      "destMETAR": "",
-      "altnMETAR": ""
-    }
+    filteredOFP["weather"] = weather
   
   if data.get("files"):
     files = { 
       "directory": data.get("files").get("directory", ""),
       "pdf": data.get("files").get("pdf", "")
     }
-  else:
-    files = { 
-      "directory": "",
-      "pdf": ""
-    }
-
-  filter = { 
-    "fetch": { 
-      "userID": data["fetch"]["userid"],
-      "status": data["fetch"]["status"],
-      "time": data["fetch"]["time"]
-    },
-    "params": params,
-    "general": general, 
-    "origin": origin,
-    "destination": destination,
-    "alternate": alternates,
-    "aircraft": aircraft,
-    "fuel": fuel,
-    "times": times, 
-    "weights": weights,
-    "weather": weather,
-    "files": files
-  }
-  return filter
+    filteredOFP["files"] = files
+  return filteredOFP
 
 def main(id):
   otp = fetchOTP(id)
