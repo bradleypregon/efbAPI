@@ -18,6 +18,7 @@ def filterOTP(otp):
   origin = {}
   destination = {}
   alternates = []
+  navlog = []
   aircraft = {}
   fuel = {}
   times = {}
@@ -200,7 +201,7 @@ def filterOTP(otp):
         "avgWindSpd": item.get("avg_wind_spd", ""),
         "ete": item.get("ete", ""),
         "route": item.get("route", ""),
-        "routeIFPS": item.get("route", ""),
+        "routeIFPS": item.get("route", ""), # TODO: look at this
         "routeNavigraph": item.get("route_navigraph", ""),
         "metar": item.get("metar", ""),
         "metarTime": item.get("metar_time", ""),
@@ -248,6 +249,34 @@ def filterOTP(otp):
 
       alternates.append(obj)
     filteredOFP["alternate"] = alternates
+
+  if data.get("navlog"):
+    for item in data["navlog"]:
+      obj = { 
+        "ident": item.get("ident", ""),
+        "name": item.get("name", ""),
+        "type": item.get("type", ""), # wpt, vor, ...
+        "frequency": item.get("frequency", ""), # vor freq, etc
+        "lat": item.get("pos_lat", ""),
+        "long": item.get("pos_long", ""),
+        "stage": item.get("stage", ""), # CLB, CRZ, DES
+        "via": item.get("via_airway", ""), # SID name, DCT, STAR name, J or V airway?
+        "isSidStar": item.get("is_sid_star", ""), # 0 or 1
+        "distance": item.get("distance", ""), # leg distance in... miles? 
+        "track": item.get("track_true", ""), # true or mag?
+        "altitude": item.get("altitude_feet", ""),
+        "windComponent": item.get("wind_component", ""),
+        "timeLeg": item.get("time_leg", ""), # time duration of the leg
+        "timeTotal": item.get("time_total", ""), # total elapsed time upon reaching leg
+        "fuelLeg": item.get("fuel_leg", ""), # fuel used in leg
+        "fuelTotalUsed": item.get("fuel_total_used", ""), # total fuel used
+        "oat": item.get("oat", ""),
+        "windDir": item.get("wind_dir", ""), # wind direction at altitude?
+        "windSpd": item.get("wind_spd", ""), # wind speed at altitude?
+        "shear": item.get("shear", ""), # 0 or 1 for windshear, like a turbulence?
+      }
+      navlog.append(obj)
+    filteredOFP["navlog"] = navlog
 
   if data.get("aircraft"):
     aircraft = { 
