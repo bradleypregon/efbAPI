@@ -1,9 +1,9 @@
 version: '3.8'
 services:
-  sbcleaner:
+  efb:
     build: .
     restart: unless-stopped
-    container_name: sbcleaner
+    container_name: efb
     volumes:
       - ./app:/app
 
