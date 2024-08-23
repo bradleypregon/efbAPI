@@ -1,7 +1,7 @@
 # SimBriefCleaner
 Python data cleaner and API for SimBrief and efbUI
 
-This app takes a JSON API response from SimBrief and strips it to what /i/ need.
+This app takes a JSON API response from SimBrief and strips it to what /i/ need for my efbUI.
 It also uses FastAPI and Uvicorn to create a server which will send the "cleaned" data to my efbUI app.
 
 Minimal path to awesome:
