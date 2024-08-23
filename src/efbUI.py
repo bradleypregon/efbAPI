@@ -108,10 +108,10 @@ def filterOTP(otp):
           "locationType": notam.get("location_type", ""),
           "dateEffective": notam.get("date_effective", ""),
           "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "2099-12-31T11:59:00Z",
-          "notamText": notam.get("account_id", ""),
-          "notamQcodeCategory": notam.get("account_id", ""),
-          "notamQcodeSubject": notam.get("account_id", ""),
-          "notamQcodeStatus": notam.get("account_id", ""),
+          "notamText": notam.get("notam_text", ""),
+          "notamQcodeCategory": notam.get("notam_qcode_category", ""),
+          "notamQcodeSubject": notam.get("notam_qcode_subject", ""),
+          "notamQcodeStatus": notam.get("notam_qcode_status", ""),
           "notamIsObstacle": notam.get("notam_is_obstacle", False)
         }
         notamList.append(temp)
@@ -165,10 +165,10 @@ def filterOTP(otp):
           "locationType": notam.get("location_type", ""),
           "dateEffective": notam.get("date_effective", ""),
           "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "2099-12-31T11:59:00Z",
-          "notamText": notam.get("account_id", ""),
-          "notamQcodeCategory": notam.get("account_id", ""),
-          "notamQcodeSubject": notam.get("account_id", ""),
-          "notamQcodeStatus": notam.get("account_id", ""),
+          "notamText": notam.get("notam_text", ""),
+          "notamQcodeCategory": notam.get("notam_qcode_category", ""),
+          "notamQcodeSubject": notam.get("notam_qcode_subject", ""),
+          "notamQcodeStatus": notam.get("notam_qcode_status", ""),
           "notamIsObstacle": notam.get("notam_is_obstacle", False)
         }
         notamList.append(temp)
@@ -238,7 +238,7 @@ def filterOTP(otp):
             "locationType": notam.get("location_type", ""),
             "dateEffective": notam.get("date_effective", ""),
             "dateExpire": notam.get("date_expire", "") if notam.get("date_expire") != False else "2099-12-31T11:59:00Z",
-            "notamText": notam.get("notam_raw", ""),
+            "notamText": notam.get("notam_text", ""),
             "notamQcodeCategory": notam.get("notam_qcode_category", ""),
             "notamQcodeSubject": notam.get("notam_qcode_subject", ""),
             "notamQcodeStatus": notam.get("notam_qcode_status", ""),
