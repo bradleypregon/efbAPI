@@ -1,14 +1,14 @@
 services:
-  efb:
+  efbAPI:
     build: .
     restart: unless-stopped
-    container_name: efb
+    container_name: efbAPI
     volumes:
       - ./app:/app
     ports:
-      - '8005:8005'
+      - '65010:65010'
 
 networks:
   default:
     external: true
-    name: nw
+    name: network
