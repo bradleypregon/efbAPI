@@ -1,12 +1,12 @@
-# SimBriefCleaner
-Python data cleaner and API for SimBrief and efbUI
+# efbUI
+Python API for efbUI
 
-This app takes a JSON API response from SimBrief and strips it to what /i/ need for my efbUI.
-It also uses FastAPI and Uvicorn to create a server which will send the "cleaned" data to my efbUI app.
+This app cleans SimBrief's API response for my efbUI app utilizing FastAPI and Uvicorn.
 
-Minimal path to awesome:
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cd src
-python3 api.py
+### Minimal path to awesome:
+1. clone repo
+2. python3 -m venv venv
+3. source venv/bin/activate
+4. pip install -r requirements.txt
+5. cd src
+6. python3 api.py
