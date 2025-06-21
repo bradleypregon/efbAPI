@@ -1,8 +1,8 @@
 services:
-  efbAPI:
+  efbapi:
     build: .
     restart: unless-stopped
-    container_name: efbAPI
+    container_name: efbapi
     volumes:
       - ./app:/app
     ports:
