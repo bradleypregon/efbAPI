@@ -1,4 +1,4 @@
-# efbUI
+# efbAPI
 Python API for efbUI
 
 This app cleans SimBrief's API response for my efbUI app utilizing FastAPI and Uvicorn.
