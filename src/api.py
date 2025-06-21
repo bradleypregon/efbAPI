@@ -9,7 +9,7 @@ def getBlank():
 
 @app.get("/latest/{sbID}")
 def fetchRoute(sbID):
-  return efbUI.main(sbID)
+  return SBCleaner.main(sbID)
 
 if __name__ == "__main__":
   config = uvicorn.Config(app, port=65010, host="0.0.0.0")
