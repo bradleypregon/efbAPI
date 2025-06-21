@@ -7,8 +7,3 @@ services:
       - ./app:/app
     ports:
       - '65010:65010'
-
-networks:
-  default:
-    external: true
-    name: network
