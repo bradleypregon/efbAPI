@@ -1,5 +1,4 @@
 import requests
-import json
 
 def fetchOTP(id):
   url = f"https://www.simbrief.com/api/xml.fetcher.php?userid={id}&json=v2"
@@ -345,5 +344,5 @@ def main(id):
   return filteredOTP
 
 if __name__ == '__main__':
-  temp = 123456
+  temp = 405981
   main(temp)
