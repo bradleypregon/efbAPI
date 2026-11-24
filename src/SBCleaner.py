@@ -35,7 +35,7 @@ def filterOTP(otp):
 
   if data.get("params"):
     params = { 
-      "requestID": data.get("params").get("request_id", ""),
+      "requestID": data.get("params").get("request_id", 0),
       "userID": data.get("params").get("user_id", ""),
       "ofpLayout": data.get("params").get("ofp_layout", ""),
       "airac": data.get("params").get("airac", ""),
@@ -50,12 +50,12 @@ def filterOTP(otp):
       "cruiseProfile": data.get("general").get("cruise_profile", ""),
       "alternateProfile": data.get("general").get("alternate_profile", ""),
       "costIndex": data.get("general").get("costindex", ""),
-      "initialAltitude": data.get("general").get("initial_altitude", ""),
-      "airDistance": data.get("general").get("air_distance", ""),
-      "passengers": data.get("general").get("passengers", ""),
+      "initialAltitude": data.get("general").get("initial_altitude", 0),
+      "airDistance": data.get("general").get("air_distance", 0),
+      "passengers": data.get("general").get("passengers", 0),
       "route": data.get("general").get("route", ""),
       "routeIFPS": data.get("general").get("route_ifps", ""),
-      "routeNavigraph": data.get("general").get("route_navigraph", "")
+      "routeNavigraph": data.get("general").get("route_navigraph", "") # MONTN2 SEA DCT ZADON DCT ZELAK DCT ZIRAN DCT ZAXBY DCT OLIBY DCT
     }
     filteredOFP["general"] = general
     
@@ -69,13 +69,13 @@ def filterOTP(otp):
       "icaoCode": data.get("origin").get("icao_code", ""),
       "iataCode": data.get("origin").get("iata_code", ""), 
       "faaCode": data.get("origin").get("faa_code", ""),
-      "elevation": data.get("origin").get("elevation", ""),
-      "posLat": data.get("origin").get("pos_lat", ""), 
-      "posLong": data.get("origin").get("pos_long", ""), 
+      "elevation": data.get("origin").get("elevation", 0),
+      "posLat": data.get("origin").get("pos_lat", 0.0), 
+      "posLong": data.get("origin").get("pos_long", 0.0), 
       "name": data.get("origin").get("name", ""),
       "planRwy": data.get("origin").get("plan_rwy", ""), 
-      "transAlt": data.get("origin").get("trans_alt", ""),
-      "transLevel": data.get("origin").get("trans_level", ""),
+      "transAlt": data.get("origin").get("trans_alt", 0),
+      "transLevel": data.get("origin").get("trans_level", 0),
       "metar": data.get("origin").get("metar", ""),
       "metarTime": data.get("origin").get("metar_time", ""), 
       "metarCategory": data.get("origin").get("metar_category", ""),
@@ -126,9 +126,9 @@ def filterOTP(otp):
       "icaoCode": data.get("destination").get("icao_code", ""),
       "iataCode": data.get("destination").get("iata_code", ""), 
       "faaCode": data.get("destination").get("faa_code", ""),
-      "elevation": data.get("destination").get("elevation", ""),
-      "posLat": data.get("destination").get("pos_lat", ""), 
-      "posLong": data.get("destination").get("pos_long", ""), 
+      "elevation": data.get("destination").get("elevation", 0),
+      "posLat": data.get("destination").get("pos_lat", 0.0), 
+      "posLong": data.get("destination").get("pos_long", 0.0), 
       "name": data.get("destination").get("name", ""),
       "planRwy": data.get("destination").get("plan_rwy", ""), 
       "transAlt": data.get("destination").get("trans_alt", ""),
@@ -184,13 +184,13 @@ def filterOTP(otp):
         "icaoCode": item.get("icao_code", ""),
         "iataCode": item.get("iata_code", ""),
         "faaCode": item.get("faa_code", ""),
-        "elevation": item.get("elevation", ""),
-        "posLat": item.get("pos_lat", ""),
-        "posLong": item.get("pos_long", ""),
+        "elevation": item.get("elevation", 0),
+        "posLat": item.get("pos_lat", 0.0),
+        "posLong": item.get("pos_long", 0.0),
         "name": item.get("name", ""),
         "planRwy": item.get("plan_rwy", ""),
-        "transAlt": item.get("trans_alt", ""),
-        "transLevel": item.get("trans_level", ""),
+        "transAlt": item.get("trans_alt", 0),
+        "transLevel": item.get("trans_level", 0),
         "cruiseAltitude": item.get("cruise_altitude", ""),
         "airDistance": item.get("air_distance", ""),
         "trackTrue": item.get("track_true", ""),
@@ -200,7 +200,7 @@ def filterOTP(otp):
         "avgWindSpd": item.get("avg_wind_spd", ""),
         "ete": item.get("ete", ""),
         "route": item.get("route", ""),
-        "routeIFPS": item.get("route", ""), # TODO: look at this
+        "routeIFPS": item.get("route", ""),
         "routeNavigraph": item.get("route_navigraph", ""),
         "metar": item.get("metar", ""),
         "metarTime": item.get("metar_time", ""),
@@ -256,8 +256,8 @@ def filterOTP(otp):
         "name": item.get("name", ""),
         "type": item.get("type", ""), # wpt, vor, ...
         "frequency": item.get("frequency", ""), # vor freq, etc
-        "lat": item.get("pos_lat", ""),
-        "long": item.get("pos_long", ""),
+        "lat": item.get("pos_lat", 0.0),
+        "long": item.get("pos_long", 0.0),
         "stage": item.get("stage", ""), # CLB, CRZ, DES
         "via": item.get("via_airway", ""), # SID name, DCT, STAR name, J or V airway?
         "isSidStar": item.get("is_sid_star", ""), # 0 or 1
@@ -306,13 +306,13 @@ def filterOTP(otp):
   
   if data.get("weights"):
     weights = { 
-      "paxCountActual": data.get("weights").get("pax_count_actual", ""),
-      "paxWeight": data.get("weights").get("pax_weight", ""),
-      "bagWeight": data.get("weights").get("bag_weight", ""),
-      "cargo": data.get("weights").get("cargo", ""),
-      "estZFW": data.get("weights").get("est_zfw", ""),
-      "estTOW": data.get("weights").get("est_tow", ""),
-      "estLDW": data.get("weights").get("est_ldw", "")
+      "paxCountActual": data.get("weights").get("pax_count_actual", 0),
+      "paxWeight": data.get("weights").get("pax_weight", 0),
+      "bagWeight": data.get("weights").get("bag_weight", 0),
+      "cargo": data.get("weights").get("cargo", 0),
+      "estZFW": data.get("weights").get("est_zfw", 0),
+      "estTOW": data.get("weights").get("est_tow", 0),
+      "estLDW": data.get("weights").get("est_ldw", 0)
     }
     filteredOFP["weights"] = weights
   
